@@ -12,17 +12,16 @@
 
 
 (defun print-board (moves)
-  (let ((inhibit-read-only t))
-    (erase-buffer)
-    (insert (row-string moves 1))
-    (newline)
-    (insert (horizontal-line))
-    (newline)
-    (insert (row-string moves 2))
-    (newline)
-    (insert (horizontal-line))
-    (newline)
-    (insert (row-string moves 3))))
+  (erase-buffer)
+  (insert (row-string moves 1))
+  (newline)
+  (insert (horizontal-line))
+  (newline)
+  (insert (row-string moves 2))
+  (newline)
+  (insert (horizontal-line))
+  (newline)
+  (insert (row-string moves 3)))
 
 (defun horizontal-winner (moves)
   (cond
@@ -85,6 +84,7 @@
 (defun go-to-ttt-buffer ()
   (switch-to-buffer-other-window "*Tic Tac Toe*")
   (compilation-mode)
+  (setq inhibit-read-only t)
   (erase-buffer))
 
 (defun alternate-current-player-token (current)
