@@ -12,16 +12,17 @@
 
 
 (defun print-board (moves)
-  (erase-buffer)
-  (insert (row-string moves 1))
-  (newline)
-  (insert (horizontal-line))
-  (newline)
-  (insert (row-string moves 2))
-  (newline)
-  (insert (horizontal-line))
-  (newline)
-  (insert (row-string moves 3)))
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (insert (row-string moves 1))
+    (newline)
+    (insert (horizontal-line))
+    (newline)
+    (insert (row-string moves 2))
+    (newline)
+    (insert (horizontal-line))
+    (newline)
+    (insert (row-string moves 3))))
 
 (defun horizontal-winner (moves)
   (cond
@@ -96,18 +97,18 @@
 
 (defun get-player-move (moves token)
   (if (string-equal token "X")
-    (let ((player-choice 0)
-           (empty-spaces (empty-spaces moves)))
+    (let* ((player-choice 0)
+            (empty-spaces (empty-spaces moves))
+            (empty-spaces-string (mapconcat 'number-to-string (mapcar (lambda (i) (+ 1 i)) empty-spaces) ", ")))
       (while
         (not (member player-choice empty-spaces))
         (setq player-choice
-          (- (read-number "Where would you like to place your marker? ") 1))
+          (- (read-number (concat "Where would you like to place your marker? (" empty-spaces-string ") ")) 1))
         (when
           (not (member player-choice empty-spaces))
           (newline) (newline) (newline)
           (insert (concat
-                    "That is not a valid choice. Valid choices are: "
-                    (mapconcat 'number-to-string (mapcar (lambda (i) (+ 1 i)) empty-spaces) ", ")))))
+                    "That is not a valid choice. Valid choices are: " empty-spaces-string))))
       player-choice)
     (computer-choice moves)))
 
