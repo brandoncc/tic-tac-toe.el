@@ -96,7 +96,19 @@
 
 (defun get-player-move (moves token)
   (if (string-equal token "X")
-    (- (read-number "Where would you like to place your marker? ") 1)
+    (let ((player-choice 0)
+           (empty-spaces (empty-spaces moves)))
+      (while
+        (not (member player-choice empty-spaces))
+        (setq player-choice
+          (- (read-number "Where would you like to place your marker? ") 1))
+        (when
+          (not (member player-choice empty-spaces))
+          (newline) (newline) (newline)
+          (insert (concat
+                    "That is not a valid choice. Valid choices are: "
+                    (mapconcat 'number-to-string (mapcar (lambda (i) (+ 1 i)) empty-spaces) ", ")))))
+      player-choice)
     (computer-choice moves)))
 
 (defun computer-choice (moves)
@@ -109,7 +121,7 @@
       (when
         (string-equal (aref moves i) " ")
         (setq spaces (cons i spaces))))
-    spaces))
+    (reverse spaces)))
 
 (defun play-game ()
   (interactive)
