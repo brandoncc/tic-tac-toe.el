@@ -140,7 +140,14 @@
       (let ((player-move (get-player-move moves current-player-token)))
         (aset moves player-move current-player-token)))
     (print-board moves)
-    (display-winner (winner moves))))
+    (display-winner (winner moves))
+
+    ;; We must reset the board because the object in memory lives on for some reason
+    ;; and affects the next time this function is called.
+    (reset-board moves)))
+
+(defun reset-board (board)
+  (fillarray board " "))
 
 (defun play-again? ()
   (let ((response nil))
