@@ -82,7 +82,8 @@
     (diagonal-winner moves)))
 
 (defun go-to-ttt-buffer ()
-  (switch-to-buffer-other-window "*Tic Tac Toe*")
+  (unless (string-equal (buffer-name) "*Tic Tac Toe*")
+    (switch-to-buffer-other-window "*Tic Tac Toe*"))
   (compilation-mode)
   (setq inhibit-read-only t)
   (erase-buffer))
@@ -96,7 +97,6 @@
     (concat (if (string-equal winner "X") "Player" "Computer") " wins!")))
 
 (defun get-player-move (moves token)
-  (message (concat "TOKEN: " token))
   (if (string-equal token "X")
     (let* ((player-choice -1)
             (empty-spaces (empty-spaces moves))
@@ -142,4 +142,14 @@
     (print-board moves)
     (display-winner (winner moves))))
 
-(play-game)
+(defun play-again? ()
+  (let ((response nil))
+    (while (not (member response '("Y" "y" "N" "n")))
+      (setq response (read-string "Play again? (y/n) ")))
+    (downcase response)))
+
+(let ((continue-playing "y"))
+  (while (string-equal continue-playing "y")
+    (play-game)
+    (setq continue-playing (play-again?)))
+  (quit-window t (get-buffer-window "*Tic Tac Toe*")))
