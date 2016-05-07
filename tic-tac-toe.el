@@ -96,8 +96,9 @@
     (concat (if (string-equal winner "X") "Player" "Computer") " wins!")))
 
 (defun get-player-move (moves token)
+  (message (concat "TOKEN: " token))
   (if (string-equal token "X")
-    (let* ((player-choice 0)
+    (let* ((player-choice -1)
             (empty-spaces (empty-spaces moves))
             (empty-spaces-string (mapconcat 'number-to-string (mapcar (lambda (i) (+ 1 i)) empty-spaces) ", ")))
       (while
