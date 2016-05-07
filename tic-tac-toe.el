@@ -98,7 +98,7 @@
 
 (defun get-player-move (moves token)
   (if (string-equal token "X")
-    (let* ((player-choice -1)
+    (let* ((player-choice nil)
             (empty-spaces (empty-spaces moves))
             (empty-spaces-string (mapconcat 'number-to-string (mapcar (lambda (i) (+ 1 i)) empty-spaces) ", ")))
       (while
